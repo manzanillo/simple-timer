@@ -58,11 +58,11 @@
         var timer = new Timer({
             onstart : function(millisec) {
                 var sec = Math.round(millisec / 1000);
-                $timer.text(sec);
+                $timer.text(Math.floor(sec/60) + ':' + sec % 60);
             },
             ontick  : function(millisec) {
                 var sec = Math.round(millisec / 1000);
-                $timer.text(sec);
+                $timer.text(Math.floor(sec/60) + ':' + sec % 60);
             },
             onpause : function() {
                 $timer.append('<br/> pause');
@@ -70,7 +70,7 @@
             onstop  : function() {
                 var time = $time.val();
                 if (!time) return;
-                $timer.text(time);
+                $timer.text(Math.floor(time/60) + ':' + time % 60);
             },
             onend   : function() {
                 $timer.text('end');
