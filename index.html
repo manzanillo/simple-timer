@@ -1,0 +1,236 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+        <meta charset="utf-8">
+        <title>Stoppuhr</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Based on https://github.com/husa/timer.js LICENSED under MIT by Yuriy Husnay (husa)-->
+        <script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+
+        <script src="timer.min.js"></script>
+</head>
+<body>
+        <div class="container">
+    <div class="title-wrapper section">
+        <h1>Stoppuhr</h1>
+        <h4>Ihnen bleiben noch</h4>
+    </div>
+    <div class="demo-wrapper section">
+        <div class="timer">&nbsp;</div> <!-- TODO in Minuten und Sekunden aufteilen -->
+        <div class="control">
+            <div class="input">
+                <label for="time-input">Zeit auswählen</label>
+                <input name="time-input" type="text" class="time-input" value="20" autofocus/>
+            </div>
+            <div class="buttons">
+
+                <svg class="button play" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+                    <path d="M8 5v14l11-7z"/>
+                    <path d="M0 0h24v24H0z" fill="none"/>
+                </svg>
+
+                <svg class="button pause" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" class="__web-inspector-hide-shortcut__"/>
+                    <path d="M0 0h24v24H0z" fill="none"/>
+                </svg>
+
+                <svg class="button stop" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+                    <path d="M0 0h24v24H0z" fill="none"/>
+                    <path d="M6 6h12v12H6z"/>
+                </svg>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    (function($) {
+    $(function() {
+        var $play  = $('.play'),
+            $pause = $('.pause'),
+            $stop  = $('.stop'),
+            $time  = $('.time-input'),
+            $timer = $('.timer');
+
+        var timer = new Timer({
+            onstart : function(millisec) {
+                var sec = Math.round(millisec / 1000);
+                $timer.text(sec);
+            },
+            ontick  : function(millisec) {
+                var sec = Math.round(millisec / 1000);
+                $timer.text(sec);
+            },
+            onpause : function() {
+                $timer.append('<br/> pause');
+            },
+            onstop  : function() {
+                var time = $time.val();
+                if (!time) return;
+                $timer.text(time);
+            },
+            onend   : function() {
+                $timer.text('end');
+            }
+        });
+
+        $play.on('click', function() {
+            var time = $time.val();
+            if (!time) return;
+            if (isNaN(time)) {
+                alert('Please input valid number');
+                return;
+            }
+
+            timer.start(time);
+        });
+
+        $pause.on('click', function() {
+            if (timer.getStatus() === 'started') {
+                timer.pause();
+            }
+        });
+
+        $stop.on('click', function() {
+            if (/started|paused/.test(timer.getStatus())) {
+                timer.stop();
+            }
+        });
+
+
+    });
+}(jQuery));
+
+</script>
+
+    
+<style>
+    @import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400);
+    @import url(https://fonts.googleapis.com/css?family=Raleway:100);
+
+
+    body {
+        font-family: "Open Sans", Arial, sans-serif;
+        font-size: 1em;
+        font-weight: 400;
+        margin: 0;
+        width: 100%;
+        background: -webkit-linear-gradient(90deg, #4EA49B 10%, #3A7B74 90%); /* Chrome 10+, Saf5.1+ */
+        background:    -moz-linear-gradient(90deg, #4EA49B 10%, #3A7B74 90%); /* FF3.6+ */
+        background:     -ms-linear-gradient(90deg, #4EA49B 10%, #3A7B74 90%); /* IE10 */
+        background:      -o-linear-gradient(90deg, #4EA49B 10%, #3A7B74 90%); /* Opera 11.10+ */
+        background:         linear-gradient(90deg, #4EA49B 10%, #3A7B74 90%); /* W3C */
+
+    }
+
+    .section {
+        padding: 20px 10px;
+        color: #34495E;
+        background-color: #ECF0F1;
+    }
+
+    .content {
+        max-width: 680px;
+        margin: 0 auto
+    }
+
+    a {
+        color: inherit
+    }
+
+
+    .title-wrapper {
+        background: none;
+        color: #ECF0F1;
+    }
+
+    .title-wrapper h1, .title-wrapper h4 {
+        float: none;
+        text-align: center;
+        display: block;
+        font-weight: 400;
+        font-size: 1.2em;
+    }
+
+    .title-wrapper h1 {
+        font-size: 7em;
+        font-family: 'Raleway', sans-serif;
+        font-weight: 100;
+        margin: 80px 0;
+    }
+    @media (max-width: 500px) {
+        .title-wrapper h1 {
+            font-size: 5em;
+        }
+    }
+
+    .demo-wrapper {
+        text-align: center;
+        background: none;
+        color: #ECF0F1;
+    }
+
+    .demo-wrapper .time-input {
+        display: block;
+        margin: 0 auto;
+        font-size: 1.5em;
+        max-width: 200px;
+        padding: 4px;
+        background: rgba(255, 255, 255, 0.2);
+        border: solid 1px rgba(255, 255, 255, 0.4);
+        -moz-border-radius: 4px;
+        -webkit-border-radius: 4px;
+        border-radius: 4px;
+        color: inherit;
+        outline: none;
+        -moz-transition: all 700ms;
+        -o-transition: all 700ms;
+        -webkit-transition: all 700ms;
+        transition: all 700ms
+    }
+
+    .demo-wrapper .time-input:focus {
+        background: rgba(255, 255, 255, 0.5);
+        border: solid 1px rgba(255, 255, 255, 0.7)
+    }
+
+    .demo-wrapper .buttons .button {
+        width: 60px;
+        height: 60px;
+        background: none;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        margin: 5px 10px;
+        fill: #ECF0F1;
+        font-size: 2.5em;
+        -moz-transition: fill 400ms;
+        -o-transition: fill 400ms;
+        -webkit-transition: fill 400ms;
+        transition: fill 400ms
+    }
+
+    .demo-wrapper .buttons .button:hover {
+        fill: #46627f;
+    }
+
+    .demo-wrapper .timer {
+        font-size: 8em;
+        font-family: 'Raleway', sans-serif;
+        font-weight: 100;
+    }
+    
+    .control {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+    }
+</style>
+    
+</body>
+</html>
