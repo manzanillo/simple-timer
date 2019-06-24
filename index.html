@@ -58,19 +58,34 @@
         var timer = new Timer({
             onstart : function(millisec) {
                 var sec = Math.round(millisec / 1000);
-                $timer.text(Math.floor(sec/60) + ':' + sec % 60);
+                if (sec % 60 < 10){
+                    $timer.text(Math.floor(sec/60) + ':0' + sec % 60);
+                }
+                else {
+                    $timer.text(Math.floor(sec/60) + ':' + sec % 60);
+                }
             },
             ontick  : function(millisec) {
                 var sec = Math.round(millisec / 1000);
-                $timer.text(Math.floor(sec/60) + ':' + sec % 60);
+                if (sec % 60 < 10){
+                    $timer.text(Math.floor(sec/60) + ':0' + sec % 60);
+                }
+                else {
+                    $timer.text(Math.floor(sec/60) + ':' + sec % 60);
+                }
             },
             onpause : function() {
-                $timer.append('<br/> pause');
+                $timer.append('<br/> <div style="font-size: 0.2em;"> pause </div>');
             },
             onstop  : function() {
                 var time = $time.val();
                 if (!time) return;
-                $timer.text(Math.floor(time/60) + ':' + time % 60);
+                if (time % 60 < 10){
+                    $timer.text(Math.floor(time/60) + ':0' + time % 60);
+                }
+                else {
+                    $timer.text(Math.floor(time/60) + ':' + time % 60);
+                }
             },
             onend   : function() {
                 $timer.text('end');
@@ -81,7 +96,7 @@
             var time = $time.val();
             if (!time) return;
             if (isNaN(time)) {
-                alert('Please input valid number');
+                alert('Bitte Zahl eingeben');
                 return;
             }
 
@@ -127,7 +142,6 @@
     }
 
     .section {
-        padding: 20px 10px;
         color: #34495E;
         background-color: #ECF0F1;
     }
@@ -156,10 +170,10 @@
     }
 
     .title-wrapper h1 {
-        font-size: 7em;
+        font-size: 4em;
         font-family: 'Raleway', sans-serif;
         font-weight: 100;
-        margin: 80px 0;
+        margin: 40px 0;
     }
     @media (max-width: 500px) {
         .title-wrapper h1 {
@@ -218,7 +232,7 @@
     }
 
     .demo-wrapper .timer {
-        font-size: 8em;
+        font-size: 10em;
         font-family: 'Raleway', sans-serif;
         font-weight: 100;
     }
