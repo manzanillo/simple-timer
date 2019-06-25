@@ -93,6 +93,9 @@
         });
 
         $play.on('click', function() {
+            if (timer.getStatus() === 'paused') {
+                timer.start();
+            }
             var time = $time.val();
             if (!time) return;
             if (isNaN(time)) {
